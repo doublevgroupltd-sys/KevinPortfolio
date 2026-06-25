@@ -4,7 +4,7 @@ import { Settings, Experience } from "@/lib/types";
 import { About } from "@/components/About";
 import { Timeline } from "@/components/Timeline";
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: "About",
@@ -13,8 +13,8 @@ export const metadata: Metadata = {
 
 export default async function AboutPage() {
   const [{ settings }, { experience }] = await Promise.all([
-    apiFetch<{ settings: Settings }>("/settings", { revalidate: 300 }),
-    apiFetch<{ experience: Experience[] }>("/experience", { revalidate: 300 }),
+    apiFetch<{ settings: Settings }>("/settings", { cache: 'no-store' }),
+    apiFetch<{ experience: Experience[] }>("/experience", { cache: 'no-store' }),
   ]);
 
   return (

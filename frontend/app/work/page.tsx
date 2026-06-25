@@ -3,7 +3,7 @@ import { apiFetch } from "@/lib/api";
 import { Project } from "@/lib/types";
 import { WorkGrid } from "@/components/WorkGrid";
 
-export const revalidate = 300;
+export const dynamic = 'force-dynamic';
 
 export const metadata: Metadata = {
   title: "Work",
@@ -11,7 +11,7 @@ export const metadata: Metadata = {
 };
 
 export default async function WorkPage() {
-  const { projects } = await apiFetch<{ projects: Project[] }>("/projects", { revalidate: 300 });
+  const { projects } = await apiFetch<{ projects: Project[] }>("/projects", { cache: 'no-store' });
 
   return (
     <div className="pt-20">
