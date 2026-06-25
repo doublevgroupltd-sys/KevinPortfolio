@@ -7,7 +7,7 @@ const prisma = new PrismaClient();
 async function main() {
   console.log("🌱 Seeding database...");
 
-  // ---------- Admin user ----------
+    // ---------- Admin user ----------
   const adminEmail = process.env.ADMIN_EMAIL || "admin@example.com";
   const adminPassword = process.env.ADMIN_PASSWORD || "ChangeMe123!";
   const adminName = process.env.ADMIN_NAME || "Alex Rivera";
@@ -15,11 +15,19 @@ async function main() {
 
   await prisma.user.upsert({
     where: { email: adminEmail },
-    update: {},
-    create: { email: adminEmail, password: hashedPassword, name: adminName, role: "admin" },
+    update: {
+      password: hashedPassword,    // always update to the latest hash
+      name: adminName,
+      role: "ADMIN",               // fix: uppercase ADMIN
+    },
+    create: {
+      email: adminEmail,
+      password: hashedPassword,
+      name: adminName,
+      role: "ADMIN",               // create with correct role
+    },
   });
   console.log(`✅ Admin user ready: ${adminEmail}`);
-
   // ---------- Settings ----------
   await prisma.settings.upsert({
     where: { id: "singleton" },
