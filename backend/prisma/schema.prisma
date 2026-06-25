@@ -1,0 +1,143 @@
+generator client {
+  provider = "prisma-client-js"
+}
+
+datasource db {
+  provider = "postgresql"
+  url      = env("DATABASE_URL")
+}
+
+model User {
+  id        String   @id @default(uuid())
+  email     String   @unique
+  password  String
+  name      String
+  role      String   @default("admin")
+  createdAt DateTime @default(now())
+  updatedAt DateTime @updatedAt
+}
+
+model Settings {
+  id            String   @id @default("singleton")
+  siteName      String   @default("Alex Rivera")
+  tagline       String   @default("Full-Stack Developer • Designer • Problem Solver")
+  bio           String   @default("")
+  funFacts      String[] @default([])
+  profilePhoto  String   @default("")
+  resumeUrl     String   @default("")
+  yearsExperience Int    @default(0)
+  projectsCompleted Int  @default(0)
+  clientsServed Int      @default(0)
+  linesOfCode   Int      @default(0)
+  githubUrl     String   @default("")
+  linkedinUrl   String   @default("")
+  twitterUrl    String   @default("")
+  dribbbleUrl   String   @default("")
+  instagramUrl  String   @default("")
+  email         String   @default("")
+  defaultTheme  String   @default("system")
+  updatedAt     DateTime @updatedAt
+}
+
+model Project {
+  id          String   @id @default(uuid())
+  title       String
+  slug        String   @unique
+  category    String
+  thumbnail   String
+  gallery     String[] @default([])
+  shortDesc   String
+  caseStudy   String
+  role        String   @default("")
+  timeline    String   @default("")
+  challenges  String   @default("")
+  solution    String   @default("")
+  techStack   String[] @default([])
+  liveUrl     String   @default("")
+  githubUrl   String   @default("")
+  completedAt DateTime?
+  featured    Boolean  @default(false)
+  order       Int      @default(0)
+  createdAt   DateTime @default(now())
+  updatedAt   DateTime @updatedAt
+}
+
+model SkillCategory {
+  id     String  @id @default(uuid())
+  name   String
+  order  Int     @default(0)
+  skills Skill[]
+}
+
+model Skill {
+  id          String        @id @default(uuid())
+  name        String
+  icon        String        @default("")
+  level       Int           @default(50)
+  description String        @default("")
+  order       Int           @default(0)
+  categoryId  String
+  category    SkillCategory @relation(fields: [categoryId], references: [id], onDelete: Cascade)
+}
+
+model Banner {
+  id        String   @id @default(uuid())
+  image     String
+  headline  String
+  subtext   String   @default("")
+  ctaText   String   @default("Learn More")
+  ctaLink   String   @default("#")
+  order     Int      @default(0)
+  active    Boolean  @default(true)
+  createdAt DateTime @default(now())
+}
+
+model Testimonial {
+  id        String   @id @default(uuid())
+  name      String
+  title     String   @default("")
+  photo     String   @default("")
+  text      String
+  rating    Int      @default(5)
+  visible   Boolean  @default(true)
+  order     Int      @default(0)
+  createdAt DateTime @default(now())
+}
+
+model Post {
+  id            String    @id @default(uuid())
+  title         String
+  slug          String    @unique
+  featuredImage String    @default("")
+  excerpt       String    @default("")
+  content       String
+  tags          String[]  @default([])
+  status        String    @default("draft")
+  publishedAt   DateTime?
+  createdAt     DateTime  @default(now())
+  updatedAt     DateTime  @updatedAt
+}
+
+model Experience {
+  id          String    @id @default(uuid())
+  company     String
+  role        String
+  logo        String    @default("")
+  startDate   DateTime
+  endDate     DateTime?
+  current     Boolean   @default(false)
+  description String
+  details     String    @default("")
+  type        String    @default("work")
+  order       Int       @default(0)
+}
+
+model Message {
+  id        String   @id @default(uuid())
+  name      String
+  email     String
+  subject   String
+  message   String
+  read      Boolean  @default(false)
+  createdAt DateTime @default(now())
+}

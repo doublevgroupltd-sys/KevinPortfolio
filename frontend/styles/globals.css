@@ -1,0 +1,115 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+
+:root {
+  --background: 40 30% 98%;
+  --foreground: 20 14% 8%;
+  --muted: 40 20% 94%;
+  --muted-foreground: 20 8% 40%;
+  --border: 20 10% 88%;
+  --accent: 20 14% 8%;
+  --accent-foreground: 40 30% 98%;
+  --card: 0 0% 100%;
+  --card-foreground: 20 14% 8%;
+  --gold: 38 55% 52%;
+
+  --font-display: "Fraunces", Georgia, serif;
+  --font-sans: "Inter", system-ui, sans-serif;
+  --font-mono: "JetBrains Mono", monospace;
+}
+
+.dark {
+  --background: 20 14% 7%;
+  --foreground: 40 30% 96%;
+  --muted: 20 12% 12%;
+  --muted-foreground: 30 10% 65%;
+  --border: 20 10% 18%;
+  --accent: 40 30% 96%;
+  --accent-foreground: 20 14% 8%;
+  --card: 20 14% 9%;
+  --card-foreground: 40 30% 96%;
+  --gold: 38 60% 58%;
+}
+
+* {
+  border-color: hsl(var(--border));
+}
+
+html {
+  scroll-behavior: smooth;
+}
+
+body {
+  background-color: hsl(var(--background));
+  color: hsl(var(--foreground));
+  font-family: var(--font-sans);
+  -webkit-font-smoothing: antialiased;
+  text-rendering: optimizeLegibility;
+}
+
+::selection {
+  background-color: hsl(var(--gold) / 0.3);
+}
+
+/* Visible, generous focus ring everywhere for keyboard accessibility */
+:focus-visible {
+  outline: 2px solid hsl(var(--gold));
+  outline-offset: 3px;
+  border-radius: 2px;
+}
+
+.container-luxury {
+  max-width: 1440px;
+  margin-left: auto;
+  margin-right: auto;
+  padding-left: clamp(1.5rem, 5vw, 5rem);
+  padding-right: clamp(1.5rem, 5vw, 5rem);
+}
+
+.section-padding {
+  padding-top: clamp(5rem, 10vw, 9rem);
+  padding-bottom: clamp(5rem, 10vw, 9rem);
+}
+
+/* Skip link for keyboard/screen-reader users */
+.skip-link {
+  position: absolute;
+  left: -9999px;
+  top: 0;
+  z-index: 100;
+  background: hsl(var(--accent));
+  color: hsl(var(--accent-foreground));
+  padding: 0.75rem 1.25rem;
+  border-radius: 0.5rem;
+}
+.skip-link:focus {
+  left: 1rem;
+  top: 1rem;
+}
+
+.prose-luxury {
+  font-size: 1.125rem;
+  line-height: 1.8;
+}
+.prose-luxury h2 {
+  font-family: var(--font-display);
+  font-size: clamp(1.75rem, 3vw, 2.5rem);
+  margin-top: 2.5rem;
+  margin-bottom: 1rem;
+}
+.prose-luxury p {
+  margin-bottom: 1.5rem;
+  color: hsl(var(--muted-foreground));
+}
+.prose-luxury pre {
+  background: hsl(var(--muted));
+  padding: 1.5rem;
+  border-radius: 0.75rem;
+  overflow-x: auto;
+  margin-bottom: 1.5rem;
+}
+.prose-luxury code {
+  font-family: var(--font-mono);
+  font-size: 0.9em;
+}
