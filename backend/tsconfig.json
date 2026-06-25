@@ -12,7 +12,7 @@
     "resolveJsonModule": true,
     "moduleResolution": "node",
     "declaration": false,
-    "sourceMap": false
+    "sourceMap": false,
     "ignoreDeprecations": "6.0"
   },
   "include": ["src/**/*.ts", "prisma/**/*.ts"],
