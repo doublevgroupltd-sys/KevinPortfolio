@@ -1,9 +1,11 @@
 "use client";
 
+import { useEffect } from "react";
+import { useRouter } from "next/navigation";
 import Link from "next/link";
 import { useQuery } from "@tanstack/react-query";
 import { FolderKanban, Newspaper, MessageSquareQuote, GalleryHorizontal, Mail, Plus } from "lucide-react";
-import { useRequireAuth } from "@/lib/useRequireAuth";
+import { useAuthStore } from "@/store/authStore";
 import { AdminShell } from "@/components/admin/AdminShell";
 import { Card } from "@/components/ui/card";
 import { apiClientFetch } from "@/lib/api";
@@ -22,7 +24,18 @@ interface DashboardData {
 }
 
 export default function AdminDashboardPage() {
-  const { user, loading: authLoading } = useRequireAuth();
+  const router = useRouter();
+  const { user, loading: authLoading, fetchMe } = useAuthStore();
+
+  useEffect(() => {
+    fetchMe();
+  }, [fetchMe]);
+
+  useEffect(() => {
+    if (!authLoading && !user) {
+      router.replace("/admin/login");
+    }
+  }, [user, authLoading, router]);
 
   const { data, isLoading } = useQuery({
     queryKey: ["dashboard-stats"],
@@ -31,7 +44,11 @@ export default function AdminDashboardPage() {
   });
 
   if (authLoading || !user) {
-    return <div className="flex min-h-screen items-center justify-center">Loading...</div>;
+    return (
+      <div className="flex min-h-screen items-center justify-center">
+        <p className="text-muted-foreground">Loading…</p>
+      </div>
+    );
   }
 
   const statCards = [
