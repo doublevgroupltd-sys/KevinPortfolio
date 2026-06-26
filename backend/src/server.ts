@@ -24,11 +24,11 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const UPLOAD_DIR = process.env.UPLOAD_DIR || "public/uploads";
 
-// Allowed origins – filter out any undefined (e.g., when env variable is missing)
+// Allowed origins – filter out undefined values and cast to string[]
 const allowedOrigins = [
   process.env.CORS_ORIGIN,
   "http://localhost:3000",
-].filter((origin): origin is string => typeof origin === "string");
+].filter(Boolean) as string[];
 
 /**
  * Security headers. CSP is intentionally permissive for img-src/data: to
