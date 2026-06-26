@@ -20,6 +20,8 @@ export function requireAuth(req: AuthedRequest, res: Response, next: NextFunctio
 
   try {
     const payload = verifyToken(token);
+    // Normalize role to uppercase so all guards use a consistent format
+    payload.role = payload.role.toUpperCase();
     req.user = payload;
     return next();
   } catch {
@@ -32,7 +34,7 @@ export function requireAuth(req: AuthedRequest, res: Response, next: NextFunctio
  * Always used after requireAuth.
  */
 export function requireAdmin(req: AuthedRequest, res: Response, next: NextFunction) {
-  if (!req.user || req.user.role !== "admin") {
+  if (!req.user || req.user.role !== "ADMIN") {
     return res.status(403).json({ error: "Admin access required." });
   }
   return next();
