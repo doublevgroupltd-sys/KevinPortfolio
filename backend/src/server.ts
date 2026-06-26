@@ -24,8 +24,7 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const UPLOAD_DIR = process.env.UPLOAD_DIR || "public/uploads";
 
-// Allowed origins – add your production Vercel domain and keep localhost for dev.
-// Filter to only keep strings (removes undefined).
+// Allowed origins – filter out any undefined (e.g., when env variable is missing)
 const allowedOrigins = [
   process.env.CORS_ORIGIN,
   "http://localhost:3000",
@@ -55,7 +54,6 @@ app.use(
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (server-to-server, mobile apps, etc.)
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
