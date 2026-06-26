@@ -24,11 +24,12 @@ const app = express();
 const PORT = process.env.PORT || 4000;
 const UPLOAD_DIR = process.env.UPLOAD_DIR || "public/uploads";
 
-// Allowed origins – add your production Vercel domain and keep localhost for dev
+// Allowed origins – add your production Vercel domain and keep localhost for dev.
+// Filter to only keep strings (removes undefined).
 const allowedOrigins = [
-  process.env.CORS_ORIGIN,        // production (e.g., https://...vercel.app)
-  "http://localhost:3000",        // local development
-].filter(Boolean);                // removes any undefined values
+  process.env.CORS_ORIGIN,
+  "http://localhost:3000",
+].filter((origin): origin is string => typeof origin === "string");
 
 /**
  * Security headers. CSP is intentionally permissive for img-src/data: to
@@ -43,7 +44,7 @@ app.use(
         imgSrc: ["'self'", "data:", "https:"],
         scriptSrc: ["'self'"],
         styleSrc: ["'self'", "'unsafe-inline'"],
-        connectSrc: ["'self'", ...allowedOrigins],   // allow API calls from these origins
+        connectSrc: ["'self'", ...allowedOrigins],
       },
     },
     crossOriginResourcePolicy: { policy: "cross-origin" },
@@ -54,7 +55,7 @@ app.use(
 app.use(
   cors({
     origin: (origin, callback) => {
-      // Allow requests with no origin (server-to-server, mobile apps, curl, etc.)
+      // Allow requests with no origin (server-to-server, mobile apps, etc.)
       if (!origin) return callback(null, true);
       if (allowedOrigins.includes(origin)) {
         callback(null, true);
@@ -62,7 +63,7 @@ app.use(
         callback(new Error("Not allowed by CORS"));
       }
     },
-    credentials: true,   // allow cookies / authorization headers
+    credentials: true,
   })
 );
 
