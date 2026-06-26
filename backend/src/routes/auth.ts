@@ -17,7 +17,7 @@ const isProd = process.env.NODE_ENV === "production";
 const cookieOptions = {
   httpOnly: true,
   secure: isProd,
-  sameSite: "strict" as const,
+  sameSite: (isProd ? "none" : "lax") as "none" | "lax",
   maxAge: 7 * 24 * 60 * 60 * 1000,
   path: "/",
 };
@@ -37,7 +37,7 @@ router.get("/csrf", (req, res) => {
   res.cookie("csrf_token", token, {
     httpOnly: false,
     secure: isProd,
-    sameSite: "strict",
+    sameSite: isProd ? "none" : "lax",
     path: "/",
   });
   res.json({ csrfToken: token });
