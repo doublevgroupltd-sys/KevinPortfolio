@@ -1,27 +1,26 @@
 "use client";
 
 import { useEffect } from "react";
-import { useRouter } from "next/navigation";
+import { useRouter, usePathname } from "next/navigation";
 import { useAuthStore } from "@/store/authStore";
 
-/**
- * Ensures the current user is authenticated before rendering admin content.
- * Redirects to /admin/login if not. Use inside any /admin/* page (except login).
- */
 export function useRequireAuth() {
   const { user, loading, fetchMe } = useAuthStore();
   const router = useRouter();
+  const pathname = usePathname();
 
   useEffect(() => {
     fetchMe();
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [fetchMe]);
 
   useEffect(() => {
     if (!loading && !user) {
-      router.replace("/admin/login");
+      // Only redirect to login if we’re already inside the admin area
+      if (pathname.startsWith("/admin")) {
+        router.replace("/admin/login");
+      }
     }
-  }, [loading, user, router]);
+  }, [loading, user, pathname, router]);
 
   return { user, loading };
 }
